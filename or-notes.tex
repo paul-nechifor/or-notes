@@ -1,0 +1,277 @@
+\documentclass[12pt]{article}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{multirow}
+
+\newcommand*\sepstars{%
+  \begin{center}
+    $\star\star\star$
+  \end{center}
+}
+
+\title{Operations Research: Personal Notes}
+\author{Paul Nechifor}
+
+\begin{document}
+
+\maketitle
+
+\section{Terms}
+
+\begin{description}
+
+\item[algebraic method] \hfill
+    \begin{itemize}
+    \item can be used for any number of decision variables unlike the
+        \emph{graphical method}
+    \end{itemize}
+    
+    Say you have $n$ constraints and $m$ decision variables. You transform the
+    inequalities from the constraints into equations by adding $n$ slack
+    variables. Now you have $n+m$ total variables and a system of $n$ equations.
+    
+    You can find the corner points by setting $m$ of the variables to 0 and
+    solving the system (some solutions will be unfeasable in which case they are
+    not corner points). This means there are $C_{n+m}^m$ combinations (some
+    unfeasable).
+    
+    (If you set the variables to any point other than 0 you
+    might get inner points, not corner points.)
+
+\item[basic solutions] \hfill \\
+    The solutions you get by using the \emph{algebraic method}. If they are
+    feasible they are called \emph{basic feasible solutions}.
+    
+    The variables which are set to 0 are the \emph{non-basic variables} and the
+    ones which are solved are called \emph{basic variables}.
+
+\item[constraints] \ldots
+
+\item[corner points] \ldots
+
+\item[decision variable] \ldots
+
+\item[feasible region] \hfill \\
+    All the feasible solutions. Is withing the corder points.
+
+\item[feasible solution] \hfill \\
+    Solutions which satisify all the constraints and the non-negativity
+    requirements.
+
+\item[graphical method] \hfill
+    \begin{itemize}
+    \item for two decision variables
+    \end{itemize}
+    
+\item[non negativity restrictions] \ldots
+
+\item[objective function] \ldots
+
+\item[optimal solution] \hfill \\
+    Something something.
+    
+\item[slack variables] \hfill \\
+    The variables which are introduced to transform the inequalities in the
+    constraints into equations. For example (1) into (2) by adding $x_3$.
+    \begin{align}
+        2x_1+5x_2&\ge3\\
+        2x_1+5x_2+x_3&=3
+    \end{align}
+    They are subject to the non-negativity restrictions but do not count to the
+    objective function.
+    
+    When $\ge$ inequalities are used, they are subtracted and are called
+    \emph{negative slack variables} or \emph{surplus variables}. But still
+    $x_i \ge 0$.
+
+\end{description}
+
+\section{Simplex method}
+
+\subsection{Algebric form}
+
+Example algorithm for:
+\begin{align*}
+    \text{max } 6x_1 + 5x_2 \\
+    x_1 + x_2 &\le 5 \\
+    3x_1 + 2x_2 &\le 12 \\
+    x_1,x_2 &\ge 0
+\end{align*}
+It is transformed into:
+\begin{align*}
+    \text{max } 6x_1 + 5x_2 \\
+    x_1 + x_2 + x_3 &= 5 \\
+    3x_1 + 2x_2 + x_4 &= 12 \\
+    x_1,x_2,x_3,x_4 &\ge 0
+\end{align*}
+
+The constraints should not have negative values so we write the equations by
+$x_3$ and $x_4$ and set the rest to 0 (thus having a basic feasible solution).
+
+Iteration 1:
+\setcounter{equation}{0}
+\begin{align}
+    x_3 &= 5 - x_1 - x_2 \\
+    x_4 &= 12 - 3x_1 - 2x_2 \\
+    z &= 6x_1 + 5x_2 \notag
+\end{align}
+
+The objective is to increase $z$ so it appears that $x_1$ will increase it
+faster. (1) limits $x_1$ to 5 and (2) limits it to 4. So we rewrite (2) by
+$x_1$ and (1) with the new $x_1$. This is a new basic feasible solution.
+
+Iteration 2:
+\begin{align}
+    3x_1 = 12 - 2x_2 - x_4 &\Leftrightarrow
+        x_1 = 4 - \frac{2}{3}x_2 - \frac{1}{3}x_4 \\
+    x_3 = 5 - (4 - \frac{2}{3}x_2 - \frac{1}{3}x_4) - x2 &\Leftrightarrow
+        x_3 = 1 - \frac{1}{3}x_2 + \frac{1}{3}x_4 \\
+    z = 6 (4 - \frac{2}{3}x_2 - \frac{1}{3}x_4) + 5x_2 &\Leftrightarrow
+        z = 24 + x_2 - 2x_4 \notag
+\end{align}
+
+Now $z$ can be increased further by either incresing $x_2$ or decreasing $x_4$
+(beacause of the negative coeficient $-2$). But decreasing $x_4$ would make it
+negative so we have to increase $x_2$ which is limited to 6 in (3) and 3 in (4).
+
+Iteration 3:
+\begin{align}
+    \frac{1}{3}x_2 = 1 - x_3 + \frac{1}{3}x_4 &\Leftrightarrow
+        x_2 = 3 - 3x_3 + x_4 \\
+    x_1 = 4 - \frac{2}{3}(3 - 3x_3 + x_4) &\Leftrightarrow
+        x_1 = 2 + 2x_3 - x_4 \\
+    z = 24 + (3 - 3x_3 + x_4) - 2x_4 &\Leftrightarrow
+        z = 27 - 3x_3 - x_4 \notag
+\end{align}
+
+Since $x_3$ and $x_4$ cannot be increased, this is the final and optimal
+solution.
+
+Advantages of the simplex method:
+
+\begin{itemize}
+    \item Infeasiable solutions aren't evalutated.
+    \item Evaluates progressively better solutions.
+    \item Stops at the optimal solution.
+\end{itemize}
+
+\subsection{Tabular form}
+
+Stages:
+
+\begin{itemize}
+    \item Initialization: Start with a basic feasible solution (the RHS
+    variables are always non-negative).
+    
+    \item Iteration:
+    
+    \item Termination (when there is no entering column).
+\end{itemize}
+
+\begin{description}
+
+\item[$c_j$] \hfill \\
+    The coeficient of $x_j$ in the objective function.
+    
+\item[$\theta$] \hfill \\
+    The limiting value for the chosen row. The one which limits it the most (the
+    smallest) is choosen as the \emph{pivot row}.
+    
+    You don't compute $\theta$ for negative elements.
+    
+\item[entering column] \hfill \\
+    \ldots
+    
+\item[pivot element] \hfill \\
+    The intersection of the \emph{pivot row} and \emph{entering column}.
+    
+\item[pivot row] \hfill \\
+    The leaving row.
+
+\item[RHS] \hfill \\
+    Right hand side.
+
+\end{description}
+
+\sepstars
+
+\begin{itemize}
+    \item The values for the row need to contain the identity matrix for the
+    variables on the left (in that order).
+
+    \item The \emph{non-basic variables} will have the values of $c_j - z_j$
+    equal to 0.
+\end{itemize}
+
+\subsection{Minimization}
+
+For this example:
+\begin{align*}
+    \text{min } 3x_1 + 4x_2 \\
+    2x_1 + 3x_2 &\ge 8 \\
+    5x_1 + 2x_2 &\ge 12 \\
+    x_1,x_2 &\ge 0
+\end{align*}
+we transform it into
+\begin{align*}
+    \text{min } 3x_1 + 4x_2 + 0x_3 + 0x_4 \\
+    2x_1 + 3x_2 - x_3 &= 8 \\
+    5x_1 + 2x_2 - x_4 &= 12 \\
+    x_1,x_2,x_3,x_4 &\ge 0
+\end{align*}
+
+Unlike in the first example, here $x_3$ and $x_4$ have negative coeficents. This
+is done because $x_i \ge 0$ must hold for the minimum $\theta$ rule to work.
+
+Simplex works for maximization problems. A minimization objective can be turned
+into a maximization objective by negating the coeficents:
+
+\begin{equation*}
+    \text{max } -3x_1 - 4x_2 - 0x_3 - 0x_4
+\end{equation*}
+
+You can see that the slack variables do not qualify to be the initial basic
+variables since they turn out negative. So the initial basic feasible solution
+must be obtained by other means.
+
+We rewrite it by adding two artificial variables with no meaning to the
+problem: $a_1 = 8$ and $a_2 = 12$ (the corresponding RHS number):
+\begin{align*}
+    2x_1 + 3x_2 - x_3 + a_1 &= 8 \\
+    5x_1 + 2x_2 - x_4 + a_2 &= 12
+\end{align*}
+
+\subsubsection{Big M method}
+
+We have to modify the objective function and give $a_1$ and $a_2$ very small
+contributions (thus preventing them from being choosen). So for maximization,
+we give a very small number $-M$. It becomes:
+
+\begin{equation*}
+    \text{max } -3x_1 - 4x_2 - 0x_3 - 0x_4 - Ma_1 - Ma_2
+\end{equation*}
+
+$M$ is a large, positive, tends to infinity and is called big M.
+
+$a_1$ and $a_2$ are choosen as the basic variables.
+
+Artificial variables will never try to enter so there's no point in computing
+$c_j-z_j$ for them.
+
+\subsubsection{Two phase method}
+
+This method eliminates big M which makes it better to be implemented on
+computers.
+
+The first phase eliminates the artificial variables and generates a basic
+feasable solution.
+
+The second phase generates the correct one.
+
+With this method the objective function is changed so that all $x_i$ have a 0
+contribution and the artificial variables have a $-1$ contribution (for a
+maximization objective).
+
+\end{document}
