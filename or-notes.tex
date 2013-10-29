@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass[a4paper, 12pt]{article}
 \usepackage[english]{babel}
 \usepackage{ucs}
 \usepackage[utf8x]{inputenc}
@@ -273,5 +273,47 @@ The second phase generates the correct one.
 With this method the objective function is changed so that all $x_i$ have a 0
 contribution and the artificial variables have a $-1$ contribution (for a
 maximization objective).
+
+\subsection{Iteration}
+
+\begin{description}
+
+\item[degeneracy] \hfill \\
+    Aditional iteration done without increasing the objective function value.
+    
+    Degeneracy always happens if there is a tie for the leaving variable
+    (multiple equal $\theta$ values). This leads to one of the next $\theta$
+    values being equal to 0 which means that row will have to leave since it is
+    the minimum. Since the increase depends on the $\theta$, there will be no
+    increase for that iteration.
+    
+    There is no way to overcome degeneracy.
+
+\end{description}
+
+\subsection{Termination}
+
+\begin{description}
+
+\item[alternate optimum] \hfill \\
+    Multiple optimal solutions.
+    
+    Indicated by the current solution being optimal and a non-basic variable
+    with $c_j-z_j = 0$ which will want to enter. Entering it will give
+    another solution with the same objective function value.
+    
+    When they exist, there are an infinite number of optimal solutions. But the
+    simplex method only looks for the corners.
+
+\item[unboundedness] \hfill \\
+    \ldots
+
+\item[infeasibility] \hfill \\
+    \ldots
+
+\item[cycling] \hfill \\
+    \ldots
+
+\end{description}
 
 \end{document}
