@@ -33,9 +33,9 @@
     variables. Now you have $n+m$ total variables and a system of $n$ equations.
     
     You can find the corner points by setting $m$ of the variables to 0 and
-    solving the system (some solutions will be unfeasable in which case they are
+    solving the system (some solutions will be unfeasible in which case they are
     not corner points). This means there are $C_{n+m}^m$ combinations (some
-    unfeasable).
+    unfeasible).
     
     (If you set the variables to any point other than 0 you
     might get inner points, not corner points.)
@@ -57,7 +57,7 @@
     All the feasible solutions. Is withing the corder points.
 
 \item[feasible solution] \hfill \\
-    Solutions which satisify all the constraints and the non-negativity
+    Solutions which satisfy all the constraints and the non-negativity
     requirements.
 
 \item[graphical method] \hfill
@@ -88,9 +88,9 @@
 
 \end{description}
 
-\section{Simplex method}
+\section{Simplex algorithm}
 
-\subsection{Algebric form}
+\subsection{Algebraic form}
 
 Example algorithm for:
 \begin{align*}
@@ -132,8 +132,8 @@ Iteration 2:
         z = 24 + x_2 - 2x_4 \notag
 \end{align}
 
-Now $z$ can be increased further by either incresing $x_2$ or decreasing $x_4$
-(beacause of the negative coeficient $-2$). But decreasing $x_4$ would make it
+Now $z$ can be increased further by either increasing $x_2$ or decreasing $x_4$
+(because of the negative coefficient $-2$). But decreasing $x_4$ would make it
 negative so we have to increase $x_2$ which is limited to 6 in (3) and 3 in (4).
 
 Iteration 3:
@@ -152,7 +152,7 @@ solution.
 Advantages of the simplex method:
 
 \begin{itemize}
-    \item Infeasiable solutions aren't evalutated.
+    \item Infeasible solutions aren't evaluated.
     \item Evaluates progressively better solutions.
     \item Stops at the optimal solution.
 \end{itemize}
@@ -173,11 +173,11 @@ Stages:
 \begin{description}
 
 \item[$c_j$] \hfill \\
-    The coeficient of $x_j$ in the objective function.
+    The coefficient of $x_j$ in the objective function.
     
 \item[$\theta$] \hfill \\
     The limiting value for the chosen row. The one which limits it the most (the
-    smallest) is choosen as the \emph{pivot row}.
+    smallest) is chosen as the \emph{pivot row}.
     
     You don't compute $\theta$ for negative elements.
     
@@ -222,11 +222,11 @@ we transform it into
     x_1,x_2,x_3,x_4 &\ge 0
 \end{align*}
 
-Unlike in the first example, here $x_3$ and $x_4$ have negative coeficents. This
+Unlike in the first example, here $x_3$ and $x_4$ have negative coefficients. This
 is done because $x_i \ge 0$ must hold for the minimum $\theta$ rule to work.
 
 Simplex works for maximization problems. A minimization objective can be turned
-into a maximization objective by negating the coeficents:
+into a maximization objective by negating the coefficients:
 
 \begin{equation*}
     \text{max } -3x_1 - 4x_2 - 0x_3 - 0x_4
@@ -246,7 +246,7 @@ problem: $a_1 = 8$ and $a_2 = 12$ (the corresponding RHS number):
 \subsubsection{Big M method}
 
 We have to modify the objective function and give $a_1$ and $a_2$ very small
-contributions (thus preventing them from being choosen). So for maximization,
+contributions (thus preventing them from being chosen). So for maximization,
 we give a very small number $-M$. It becomes:
 
 \begin{equation*}
@@ -255,7 +255,7 @@ we give a very small number $-M$. It becomes:
 
 $M$ is a large, positive, tends to infinity and is called big M.
 
-$a_1$ and $a_2$ are choosen as the basic variables.
+$a_1$ and $a_2$ are chosen as the basic variables.
 
 Artificial variables will never try to enter so there's no point in computing
 $c_j-z_j$ for them.
@@ -266,7 +266,7 @@ This method eliminates big M which makes it better to be implemented on
 computers.
 
 The first phase eliminates the artificial variables and generates a basic
-feasable solution.
+feasible solution.
 
 The second phase generates the correct one.
 
@@ -279,7 +279,7 @@ maximization objective).
 \begin{description}
 
 \item[degeneracy] \hfill \\
-    Aditional iteration done without increasing the objective function value.
+    Additional iteration done without increasing the objective function value.
     
     Degeneracy always happens if there is a tie for the leaving variable
     (multiple equal $\theta$ values). This leads to one of the next $\theta$
@@ -306,13 +306,18 @@ maximization objective).
     simplex method only looks for the corners.
 
 \item[unboundedness] \hfill \\
-    \ldots
+    When there is an entering column, but no leaving row.
+    
+    Unbounded region vs unbounded solution.
 
 \item[infeasibility] \hfill \\
-    \ldots
+    No solution is possible.
+    
+    With the big M method, the artificial variable remains in the basis even
+    after optimality has been reached.
 
 \item[cycling] \hfill \\
-    \ldots
+    Very rare in practice.
 
 \end{description}
 
