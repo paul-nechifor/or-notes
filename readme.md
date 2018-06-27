@@ -1,3 +1,7 @@
+# This repository has been moved to [gitlab.com/paul-nechifor/or-notes](http://gitlab.com/paul-nechifor/or-notes).
+
+Old readme:
+
 Operational Research: Personal Notes
 ====================================
 
